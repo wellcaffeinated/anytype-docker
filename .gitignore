@@ -25,4 +25,4 @@ Desktop.ini
 *.sublime-workspace
 
 # Anytype credentials and data
-unsafe_secrets/
+anytype_credentials/

@@ -4,12 +4,8 @@ FROM alpine:3.23 AS builder
 # Install dependencies required by the install script
 RUN apk add --no-cache bash curl tar ca-certificates
 
-# Copy the install script
-COPY install.sh /tmp/install.sh
-
 # Run the install script (installs to ~/.local/bin)
-RUN chmod +x /tmp/install.sh && \
-    /tmp/install.sh
+RUN /usr/bin/env bash -c "$(curl -fsSL https://raw.githubusercontent.com/anyproto/anytype-cli/HEAD/install.sh)"
 
 # Final stage: Minimal runtime image
 FROM alpine:3.23
@@ -24,10 +20,6 @@ COPY --from=builder /root/.local/bin/anytype /usr/local/bin/anytype
 # Copy entrypoint script
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
-
-# Create directory for anytype data
-RUN mkdir -p /anytype
-RUN chown anytype /anytype
 
 # Switch to non-root user
 USER anytype
