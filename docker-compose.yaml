@@ -1,7 +1,6 @@
 services:
   anytype:
-    build: .
-    image: anytype:latest
+    image: ghcr.io/wellcaffeinated/anytype-docker:latest
     container_name: anytype
     ports:
       - "31009:31009"  # HTTP API
