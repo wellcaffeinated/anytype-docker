@@ -1,0 +1,29 @@
+services:
+  anytype:
+    build: .
+    image: anytype:latest
+    container_name: anytype
+    ports:
+      - "31010:31010"  # gRPC
+      - "31011:31011"  # gRPC-Web
+      # Remap back to 31009 for anytype-mcp
+      - "31009:31012"  # HTTP API (main)
+    environment:
+      ANYTYPE_LOG_LEVEL: INFO
+      DATA_PATH: /anytype
+    volumes:
+      # Secret key gets stored here
+      - .anytype:/home/anytype/.anytype
+      # Persist anytype data
+      - anytype-data:/anytype
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "anytype", "version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  anytype-data:
+    driver: local
