@@ -2,7 +2,7 @@
 set -e
 
 # Set environment variables
-CREDS_FILE="/home/anytype/.anytype/credentials.json"
+CREDS_FILE="/home/anytype/.anytype/config.json"
 BOT_NAME="${ANYTYPE_BOT_NAME:-anytype-bot}"
 LISTEN_ADDRESS="${ANYTYPE_LISTEN_ADDRESS:-0.0.0.0:31012}"
 

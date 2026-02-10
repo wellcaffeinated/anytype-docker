@@ -10,7 +10,7 @@ Docker containerization for [anytype-cli](https://github.com/anyproto/anytype-cl
 
 **Auto-initialization Flow:**
 The entrypoint script (`entrypoint.sh`) implements a complex initialization sequence:
-1. Checks if credentials exist at `.anytype/credentials.json`
+1. Checks if credentials exist at `.anytype/config.json`
 2. If missing: starts `anytype serve` in background → waits for gRPC port 31010 → runs `anytype auth create` → kills server → restarts in foreground
 3. If present: starts server normally with `exec`
 
