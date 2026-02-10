@@ -11,6 +11,8 @@ services:
     environment:
       ANYTYPE_LOG_LEVEL: INFO
       DATA_PATH: /anytype
+      ANYTYPE_LISTEN_ADDRESS: 0.0.0.0:31012
+      ANYTYPE_BOT_NAME: blah  # Auto-creates credentials on first run
     volumes:
       # Secret key gets stored here
       - .anytype:/home/anytype/.anytype

@@ -14,12 +14,16 @@ RUN chmod +x /tmp/install.sh && \
 # Final stage: Minimal runtime image
 FROM alpine:3.23
 
-# Install runtime dependencies
-RUN apk add --no-cache ca-certificates && \
+# Install runtime dependencies including tini
+RUN apk add --no-cache ca-certificates netcat-openbsd tini && \
     adduser -D -h /home/anytype anytype
 
 # Copy the installed binary from builder
 COPY --from=builder /root/.local/bin/anytype /usr/local/bin/anytype
+
+# Copy entrypoint script
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Create directory for anytype data
 RUN mkdir -p /anytype
@@ -37,8 +41,8 @@ EXPOSE 31010 31011 31012
 
 ENV ANYTYPE_LOG_LEVEL=INFO
 ENV DATA_PATH=/anytype
+ENV ANYTYPE_LISTEN_ADDRESS=0.0.0.0:31012
 
-# Set the entrypoint to run anytype serve
-# Use --listen-address 0.0.0.0:31012 to bind to all interfaces for Docker
-ENTRYPOINT ["anytype"]
-CMD ["serve", "--quiet", "--listen-address", "0.0.0.0:31012"]
+# Use tini as PID 1 to handle signals and reaping
+ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/entrypoint.sh"]
+CMD []
