@@ -44,5 +44,5 @@ ENV DATA_PATH=/anytype
 ENV ANYTYPE_LISTEN_ADDRESS=0.0.0.0:31012
 
 # Use tini as PID 1 to handle signals and reaping
-ENTRYPOINT ["/sbin/tini", "--", "/usr/local/bin/entrypoint.sh"]
-CMD []
+ENTRYPOINT ["/sbin/tini", "--"]
+CMD ["/usr/local/bin/entrypoint.sh"]
